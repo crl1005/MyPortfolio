@@ -154,7 +154,7 @@ nav + nav::before {
 }
 
 
-/* === Mobile nav drawer === */
+/* Mobile nav drawer */
 .mobile-nav {
   display: none;
   position: fixed;
