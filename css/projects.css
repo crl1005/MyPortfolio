@@ -1,0 +1,234 @@
+.body-header {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 400;
+  letter-spacing: 5px;
+  color: #fff;
+  text-align: center;
+  margin: 60px 0 10px;
+}
+
+.body-header::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: rgb(250, 100, 0);
+  box-shadow: 0 0 10px rgba(250, 100, 0, 0.5);
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+/* ── Cards Grid ── */
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 320px);
+  justify-content: center;
+  gap: 28px;
+  padding: 50px 80px;
+}
+
+/* ── Each Card ── */
+.project1,
+.project2,
+.projects {
+  width: 320px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.project1:hover,
+.project2:hover,
+.projects:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border-color: rgba(250, 100, 0, 0.3);
+}
+
+/* ── Browser Mockup ── */
+.thumbnail {
+  width: 100%;
+  background: #222;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.thumbnail-bar {
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  background: #222;
+  gap: 5px;
+}
+
+.thumbnail-bar::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 12px 0 0 #febc2e, 24px 0 0 #28c840;
+  flex-shrink: 0;
+}
+
+.thumbnail-bar::after {
+  content: '';
+  flex: 1;
+  height: 14px;
+  background: #333;
+  border-radius: 20px;
+  margin-left: 20px;
+}
+
+/* ── Scaled screenshot to look like a mini preview ── */
+.thumbnail-img-wrap {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+}
+
+.thumbnail-img-wrap img {
+  width: 200%;          /* render at 2x width */
+  height: auto;
+  transform: scale(0.5);/* scale back down to 50% */
+  transform-origin: top left;
+  display: block;
+  pointer-events: none;
+}
+
+/* ── Card Body ── */
+.project1-description,
+.project2-description,
+.projects-description {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.project1-description h2,
+.project2-description h2,
+.projects-description h2 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.project1-description p,
+.project2-description p,
+.projects-description p {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.65);
+  flex: 1;
+}
+
+/* ── Tags ── */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.tags span {
+  font-size: 11px;
+  color: rgb(250, 100, 0);
+  background: rgba(250, 100, 0, 0.1);
+  border: 1px solid rgba(250, 100, 0, 0.25);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── View Button ── */
+.view-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 9px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  border: 1px solid rgba(250, 100, 0, 0.5);
+  background: transparent;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.view-btn:hover {
+  background: rgb(250, 100, 0);
+  color: #0f0f0f;
+  border-color: rgb(250, 100, 0);
+}
+
+/* ── Footer Note ── */
+.projects-footer {
+  text-align: center;
+  padding: 20px 80px 80px;
+}
+
+.projects-footer p {
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 18px 36px;
+  border: 1px solid rgba(250, 100, 0, 0.486);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .container { grid-template-columns: repeat(2, 320px); }
+}
+
+@media (max-width: 700px) {
+  .container { grid-template-columns: 1fr; padding: 24px; }
+  .project1, .project2, .projects { width: 100%; }
+}
+
+/* ── Thumbnail Image Wrap ── */
+.thumbnail-img-wrap {
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  position: relative;
+}
+
+.thumbnail-img-wrap img {
+  width: 200%;
+  height: auto;
+  transform: scale(0.5);
+  transform-origin: top left;
+  display: block;
+}
+
+/* ── Empty Placeholder ── */
+.thumbnail-img-wrap.empty {
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px dashed rgba(250, 100, 0, 0.2);
+}
+
+.placeholder-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(250, 100, 0, 0.4);
+}
