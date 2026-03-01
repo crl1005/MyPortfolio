@@ -18,12 +18,9 @@ header.header-section {
   align-items: center;
   gap: 0;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-
-  /* subtle noise texture overlay */
   backdrop-filter: blur(10px);
 }
 
-/* Decorative left accent bar */
 header.header-section::before {
   content: '';
   position: absolute;
@@ -35,7 +32,6 @@ header.header-section::before {
   box-shadow: 0 0 16px rgba(250, 100, 0, 0.6);
 }
 
-/* Brand name */
 .name {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 28px;
@@ -59,7 +55,6 @@ header.header-section::before {
   text-shadow: 0 0 20px rgba(250, 100, 0, 0.3);
 }
 
-/* Nav items */
 nav {
   display: inline-flex;
   align-items: center;
@@ -78,7 +73,6 @@ header a {
   transition: color 0.3s ease;
 }
 
-/* Animated underline */
 header a::after {
   content: '';
   position: absolute;
@@ -102,7 +96,6 @@ header a:hover::after {
   transform: scaleX(1);
 }
 
-/* Active link */
 header a.active {
   color: rgb(250, 100, 0);
 }
@@ -112,9 +105,52 @@ header a.active::after {
   opacity: 0.6;
 }
 
-/* Divider dots between nav items */
 nav + nav::before {
   content: '·';
   color: rgba(255, 255, 255, 0.15);
   font-size: 16px;
+}
+
+
+@media (max-width: 768px) {
+  header.header-section {
+    height: auto;
+    padding: 16px 24px 12px 24px;
+    flex-wrap: wrap;
+  }
+
+  .name {
+    width: 100%;
+    font-size: 22px;
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  nav {
+    flex: 1;
+    justify-content: center;
+  }
+
+  nav + nav::before {
+    display: none;
+  }
+
+  header a {
+    padding: 6px 12px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+
+  header a::after {
+    left: 12px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  header a {
+    padding: 6px 8px;
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
 }
