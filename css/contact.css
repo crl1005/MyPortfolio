@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap');
+
+:root {
+  --orange:       rgba(250, 100, 0, 1);
+  --orange-glow:  rgba(250, 100, 0, 0.35);
+  --orange-dim:   rgba(250, 100, 0, 0.12);
+  --white:        rgb(255, 255, 255);
+  --white-soft:   rgba(255, 255, 255, 0.75);
+  --white-faint:  rgba(255, 255, 255, 0.08);
+}
+
+.contact-section {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  overflow: hidden;
+}
+
+.contact-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: 1100px;
+  width: 100%;
+  align-items: center;
+  animation: fadeUp 0.8s ease both;
+}
+
+.contact-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.orb {
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(250, 100, 0, 0.18) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  animation: pulse 6s ease-in-out infinite;
+}
+
+.eyebrow {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: var(--orange);
+  margin-bottom: 16px;
+}
+
+.contact-section h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(64px, 9vw, 110px);
+  line-height: 0.9;
+  color: var(--white);
+  text-shadow: 0 0 60px var(--orange-glow);
+  margin: 0 0 28px 0;
+}
+
+.contact-section h1 .accent {
+  color: var(--orange);
+  text-shadow: 0 0 60px rgba(250, 100, 0, 0.6);
+}
+
+.contact-section p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.9;
+  color: var(--white-soft);
+  margin: 0 0 32px 0;
+}
+
+.follow-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  color: var(--white-soft);
+  margin: 0 0 8px 0;
+}
+
+.divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+  border-radius: 2px;
+  margin-bottom: 32px;
+}
+
+.email-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.email-row img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.email-link {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--white-soft);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.email-link:hover {
+  color: var(--orange);
+  border-color: var(--orange);
+}
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: var(--white-faint);
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.social-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--orange-dim), transparent);
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.social-card:hover {
+  border-color: rgba(250, 100, 0, 0.4);
+  transform: translateX(8px);
+  box-shadow: 0 0 30px rgba(250, 100, 0, 0.12),
+              inset 0 0 20px rgba(250, 100, 0, 0.05);
+}
+
+.social-card:hover::before {
+  opacity: 1;
+}
+
+.social-card img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.social-card span {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .contact-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .orb {
+    left: 50%;
+    width: 300px;
+    height: 300px;
+  }
+
+  .contact-section h1 {
+    font-size: clamp(56px, 14vw, 80px);
+  }
+}
+
+.social-card:nth-child(1) { animation: fadeUp 0.8s 0.1s ease both; }
+.social-card:nth-child(2) { animation: fadeUp 0.8s 0.2s ease both; }
+.social-card:nth-child(3) { animation: fadeUp 0.8s 0.3s ease both; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: 1;   }
+  50%       { transform: translate(-50%, -50%) scale(1.15); opacity: 0.7; }
+}

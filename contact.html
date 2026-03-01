@@ -3,53 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>contact</title>
+  <title>Contact</title>
 
-  <!-- links -->
-  <link rel="stylesheet" href="aboutme.html">
-  <link rel="stylesheet" href="projects.html">
-  <link rel="stylesheet" href="home.html">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
 
-  <!-- css -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/general.css">
   <link rel="stylesheet" href="css/header.css">
-  
+  <link rel="stylesheet" href="css/contact.css">
+
 </head>
 <body>
-  
+
   <header class="header-section">
-
-    <h1 class="name">ESGUERRA Website</h1>
-
-    <nav> <a href="home.html"> HOME </a> </nav>
-    <nav> <a href="aboutme.html">ABOUT</a></nav>
-    <nav> <a href="projects.html">PROJECTS</a></nav>
-    <nav> <a class="active" href="contact.html">CONTACT</a></nav>
-
+    <h1 class="name">ESGUERRA <span>Website</span></h1>
+    <nav><a href="home.html">Home</a></nav>
+    <nav><a href="aboutme.html">About</a></nav>
+    <nav><a class="active" href="projects.html">Projects</a></nav>
+    <nav><a href="contact.html">Contact</a></nav>
   </header>
 
-  <h1>Contact Me</h1>
-  <p>Feel free to reach out to me for any inquiries, collaborations, or freelance opportunities. I am open to discussing potential projects and partnerships. You can contact me via email at</p>
+  <section class="contact-section">
+
+    <!-- Decorative background -->
+    <div class="orb"></div>
+
+    <div class="contact-inner">
+
+      <!-- Left: text block -->
+      <div class="contact-text">
+        <h1>Contact<br><span class="accent">Me</span></h1>
+        <p>Feel free to reach out for any inquiries, collaborations, or freelance opportunities. I am open to discussing potential projects where I can contribute my skills and expertise.</p>
+
+
+
+        <!-- Email row -->
+        <div class="email-row">
+          <img src="img/email-icon" alt="Email">
+          <a href="mailto:carlosesguerra001@gmail.com" class="email-link">carlosesguerra001@gmail.com</a>
+        </div>
+      </div>
+
+      <!-- Right: social cards -->
+      <div class="contact-right">
+        <p class="follow-label">FOLLOW ME ON</p>
+
+        <div class="social-links">
+
+          <a href="https://www.facebook.com/HAHAHAHAHAHAAHsadboyMode" class="social-card">
+            <img src="img/fb-icons" alt="Facebook">
+            <span>Facebook</span>
+          </a>
+
+          <a href="https://www.instagram.com/nwl_crl/" class="social-card">
+            <img src="img/instagram-icon" alt="Instagram">
+            <span>Instagram</span>
+          </a>
+
+          <a href="https://www.tiktok.com/@zikatiqt"  class="social-card">
+            <img src="img/tiktok-icon" alt="TikTok">
+            <span>TikTok</span>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+
+  </section>
 
 </body>
-
-<style>
-
-
-  h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(42px, 6vw, 72px);
-    color: rgb(255, 255, 255);
-    text-shadow: 0 0 40px rgba(250, 100, 0, 0.4);
-    margin: 40px;
-  }
-
-  p {
-    font-size: 20px;
-    font-weight: 300;
-    line-height: 2;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 40px;
-  }
-</style>
 </html>
