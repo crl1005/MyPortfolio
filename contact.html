@@ -16,13 +16,30 @@
 </head>
 <body>
 
-  <header class="header-section">
+ <header class="header-section">
     <h1 class="name">ESGUERRA <span>Website</span></h1>
-    <nav><a href="index.html">Home</a></nav>
+
+    <!-- Desktop nav -->
+    <nav><a class="active" href="index.html">Home</a></nav>
     <nav><a href="aboutme.html">About</a></nav>
-    <nav><a class="active" href="projects.html">Projects</a></nav>
+    <nav><a href="projects.html">Projects</a></nav>
     <nav><a href="contact.html">Contact</a></nav>
+
+    <!-- Hamburger button -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
+
+  <!-- Mobile nav drawer -->
+  <div class="mobile-nav" id="mobileNav">
+    <a href="index.html">Home</a>
+    <a href="aboutme.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a class="active" href="contact.html">Contact</a>
+  </div>
 
   <section class="contact-section">
 
@@ -74,4 +91,21 @@
   </section>
 
 </body>
+
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileNav.classList.remove('open');
+      });
+    });
+  </script>
 </html>
