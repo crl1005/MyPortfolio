@@ -162,7 +162,7 @@
 }
 
 
-/* === Loading Screen === */
+/*  Loading Screen  */
 #loader {
   position: fixed;
   inset: 0;
@@ -184,8 +184,14 @@
 .loader-name {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(32px, 6vw, 56px);
-  letter-spacing: 6px;
+  letter-spacing: 4px;
   color: #fff;
+  border-right: 3px solid rgb(250, 100, 0);
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 8px;
+  animation: blink 0.7s infinite;
+  transition: opacity 0.5s ease;
 }
 
 .loader-name span {
@@ -266,7 +272,7 @@
 
 @keyframes blink {
   0%, 100% { border-color: rgb(250, 100, 0); }
-  50%       { border-color: transparent; }
+  50%      { border-color: transparent; }
 }
 
 @keyframes fadeUp {
