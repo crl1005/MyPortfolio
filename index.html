@@ -8,20 +8,23 @@
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="icon" href="favicon.png" type="image/png">
-  
 </head>
 <body>
 
- <header class="header-section">
-    <h1 class="name">ESGUERRA <span>Website</span></h1>
+  <!-- Loading Screen -->
+  <div id="loader">
+    <div class="loader-name">ESGUERRA <span>Website</span></div>
+    <div class="loader-bar-track">
+      <div class="loader-bar-fill"></div>
+    </div>
+  </div>
 
-    <!-- Desktop nav -->
+  <header class="header-section">
+    <h1 class="name">ESGUERRA <span>Website</span></h1>
     <nav><a class="active" href="index.html">Home</a></nav>
     <nav><a href="aboutme.html">About</a></nav>
     <nav><a href="projects.html">Projects</a></nav>
     <nav><a href="contact.html">Contact</a></nav>
-
-    <!-- Hamburger button -->
     <button class="hamburger" id="hamburger" aria-label="Toggle menu">
       <span></span>
       <span></span>
@@ -29,7 +32,6 @@
     </button>
   </header>
 
-  <!-- Mobile nav drawer -->
   <div class="mobile-nav" id="mobileNav">
     <a class="active" href="index.html">Home</a>
     <a href="aboutme.html">About</a>
@@ -38,7 +40,6 @@
   </div>
 
   <div class="grid-container">
-
     <div class="left-side-text">
       <h1>Hi, I'm <span>Carlos Esguerra</span></h1>
       <p>Aspiring Website Developer</p>
@@ -51,12 +52,15 @@
     <div class="right-side-pic">
       <img src="img/picture-profile.jpg" alt="Carlos Esguerra">
     </div>
-
   </div>
 
-</body>
+  <script>
+    // Loading screen — hide after 5s
+    setTimeout(() => {
+      document.getElementById('loader').classList.add('hide');
+    }, 5000);
 
-<script>
+    // Hamburger
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
 
@@ -73,5 +77,5 @@
     });
   </script>
 
-
+</body>
 </html>

@@ -162,6 +162,57 @@
 }
 
 
+/* === Loading Screen === */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: #0f0f0f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 9999;
+  transition: opacity 0.6s ease;
+}
+
+#loader.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(32px, 6vw, 56px);
+  letter-spacing: 6px;
+  color: #fff;
+}
+
+.loader-name span {
+  color: rgb(250, 100, 0);
+}
+
+.loader-bar-track {
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: rgb(250, 100, 0);
+  box-shadow: 0 0 10px rgba(250, 100, 0, 0.6);
+  animation: loadBar 5s linear forwards;
+}
+
+@keyframes loadBar {
+  to { width: 100%; }
+}
+
+
 /* === Responsive === */
 @media (max-width: 768px) {
   .grid-container {
@@ -176,7 +227,6 @@
     align-items: center;
   }
 
-  /* disable typing animation on mobile — just fade in */
   .left-side-text h1 {
     white-space: normal;
     width: 100%;
