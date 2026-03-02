@@ -32,10 +32,10 @@
   </div>
 
   <div class="grid-container">
-    <div class="left-side-pic">
+    <div class="left-side-pic reveal">
       <img src="img/about-me.jpg" alt="Carlos Esguerra">
     </div>
-    <div class="righ-side-text">
+    <div class="righ-side-text reveal">
       <h2>Who Am <span>I?</span></h2>
       <div class="divider"></div>
       <p>I am an incoming freshman college student seeking freelance or project-based opportunities to gain hands-on experience in web development. I am eager to work on real projects and learn through practical experience with clients.</p>
@@ -45,27 +45,27 @@
   </div>
 
   <section class="skills-section">
-    <div class="skills-header">
+    <div class="skills-header reveal">
       <span class="skills-eyebrow">WHAT I WORK WITH</span>
       <h2 class="skills-title">Current <span>Skills</span></h2>
     </div>
     <div class="skills-grid">
 
-      <div class="skill-card">
+      <div class="skill-card reveal">
         <div class="skill-icon">
           <img src="img/html.JPG" alt="HTML">
         </div>
         <span class="skill-name">HTML</span>
       </div>
 
-      <div class="skill-card">
+      <div class="skill-card reveal">
         <div class="skill-icon">
           <img src="img/css.JPG" alt="CSS">
         </div>
         <span class="skill-name">CSS</span>
       </div>
 
-      <div class="skill-card">
+      <div class="skill-card reveal">
         <div class="skill-icon">
           <img src="img/github.JPG" alt="GitHub">
         </div>
@@ -90,6 +90,24 @@
         mobileNav.classList.remove('open');
       });
     });
+
+    // Scroll Reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.classList.remove('hidden');
+        } else {
+          entry.target.classList.remove('visible');
+          entry.target.classList.add('hidden');
+        }
+      });
+    }, {
+      threshold: 0,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
 
 </body>
