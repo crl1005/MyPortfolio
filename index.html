@@ -11,14 +11,6 @@
 </head>
 <body>
 
-  <!-- Loading Screen -->
-  <div id="loader">
-    <div class="loader-name" id="loaderText"></div>
-    <div class="loader-bar-track">
-      <div class="loader-bar-fill"></div>
-    </div>
-  </div>
-
   <header class="header-section">
     <h1 class="name">ESGUERRA <span>Website</span></h1>
     <nav><a class="active" href="index.html">Home</a></nav>
@@ -56,52 +48,7 @@
 
 </body>
 
- <script>
-    const loader = document.getElementById('loader');
-    const textElement = document.getElementById('loaderText');
-
-    const firstText = "Hello!";
-    const secondText = "Welcome to my website!";
-
-    function typeText(text, speed, callback) {
-      let i = 0;
-      textElement.textContent = "";
-
-      const typing = setInterval(() => {
-        textElement.textContent += text.charAt(i);
-        i++;
-        if (i === text.length) {
-          clearInterval(typing);
-          if (callback) setTimeout(callback, 800);
-        }
-      }, speed);
-    }
-
-    function startSequence() {
-      typeText(firstText, 80, () => {
-        textElement.style.opacity = "0";
-
-        setTimeout(() => {
-          textElement.style.opacity = "1";
-
-          typeText(secondText, 60, () => {
-            setTimeout(() => {
-              loader.classList.add('hide');
-            }, 1500);
-          });
-
-        }, 800);
-      });
-    }
-
-    // Show only on first visit
-    if (!localStorage.getItem("visited")) {
-      localStorage.setItem("visited", "true");
-      startSequence();
-    } else {
-      loader.style.display = "none";
-    }
-
+  <script>
     // Hamburger menu
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
