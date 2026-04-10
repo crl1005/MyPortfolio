@@ -93,11 +93,28 @@
   cursor: pointer;
   transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
   clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  position: relative;
+  overflow: hidden;
+}
+
+.view-project::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.view-project:hover::before {
+  left: 100%;
 }
 
 .view-project:hover {
   background: #ff3c00;
-  box-shadow: 0 0 24px rgba(250, 100, 0, 0.45);
+  box-shadow: 0 0 24px rgba(250, 100, 0, 0.45), inset 0 0 10px rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
 }
 
@@ -113,14 +130,32 @@
   padding: 14px 32px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  transition: border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.2s ease, background 0.3s ease;
   clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  position: relative;
+  overflow: hidden;
+}
+
+.contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 100, 0, 0.1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+  z-index: -1;
 }
 
 .contact:hover {
   border-color: rgb(250, 100, 0);
   color: #fff;
   transform: translateY(-2px);
+  background: rgba(250, 100, 0, 0.05);
+}
+
+.contact:hover::before {
+  transform: scaleX(1);
 }
 
 .right-side-pic {
@@ -152,13 +187,15 @@
   position: relative;
   z-index: 1;
   filter: grayscale(20%) contrast(1.05);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.05);
-  transition: filter 0.4s ease, transform 0.4s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.05), 0 0 60px rgba(250, 100, 0, 0);
+  transition: filter 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+  border-radius: 4px;
 }
 
 .right-side-pic img:hover {
-  filter: grayscale(0%) contrast(1.1);
-  transform: translateY(-6px);
+  filter: grayscale(0%) contrast(1.15) brightness(1.05);
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 30px 80px rgba(250, 100, 0, 0.3), 0 0 40px rgba(250, 100, 0, 0.15), inset 0 0 20px rgba(250, 100, 0, 0.05);
 }
 
 
@@ -223,9 +260,13 @@
 @media (max-width: 768px) {
   .grid-container {
     grid-template-columns: 1fr;
-    padding: 60px 30px;
+    padding: 40px 24px;
     text-align: center;
-    gap: 48px;
+    gap: 32px;
+  }
+
+  .grid-container::before {
+    display: none;
   }
 
   .left-side-text {
@@ -239,11 +280,13 @@
     border-right: none;
     overflow: visible;
     animation: fadeUp 0.8s ease 0.3s both;
+    font-size: clamp(36px, 8vw, 60px);
   }
 
   .left-side-text p {
     padding-left: 0;
     animation: fadeUp 0.6s ease 0.6s both;
+    font-size: 14px;
   }
 
   .left-side-text p::before {
@@ -253,6 +296,13 @@
   .cta-group {
     justify-content: center;
     animation: fadeUp 0.6s ease 0.9s both;
+    gap: 12px;
+  }
+
+  .view-project,
+  .contact {
+    padding: 12px 24px;
+    font-size: 11px;
   }
 
   .right-side-pic::before {
@@ -260,8 +310,36 @@
   }
 
   .right-side-pic img {
-    width: 220px;
-    height: 260px;
+    width: 100%;
+    max-width: 280px;
+    height: 340px;
+  }
+
+  .right-side-pic {
+    animation: slideInRight 0.8s 0.4s ease both;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    padding: 30px 16px;
+    gap: 24px;
+  }
+
+  .left-side-text h1 {
+    font-size: clamp(28px, 7vw, 48px);
+    letter-spacing: 1px;
+  }
+
+  .left-side-text p {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .view-project,
+  .contact {
+    padding: 10px 20px;
+    font-size: 10px;
   }
 }
 
@@ -278,4 +356,20 @@
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 20px rgba(250, 100, 0, 0.4); }
+  50% { box-shadow: 0 0 40px rgba(250, 100, 0, 0.6); }
+  100% { box-shadow: 0 0 20px rgba(250, 100, 0, 0.4); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
 }

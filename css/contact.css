@@ -150,7 +150,7 @@
   letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
 .social-card::before {
@@ -160,14 +160,15 @@
   background: linear-gradient(135deg, var(--orange-dim), transparent);
   border-radius: 14px;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease;
 }
 
 .social-card:hover {
-  border-color: rgba(250, 100, 0, 0.4);
-  transform: translateX(8px);
-  box-shadow: 0 0 30px rgba(250, 100, 0, 0.12),
-              inset 0 0 20px rgba(250, 100, 0, 0.05);
+  border-color: rgba(250, 100, 0, 0.6);
+  transform: translateX(12px) translateY(-2px);
+  box-shadow: 0 10px 40px rgba(250, 100, 0, 0.2),
+              inset 0 0 20px rgba(250, 100, 0, 0.08);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .social-card:hover::before {
@@ -191,17 +192,91 @@
 @media (max-width: 768px) {
   .contact-inner {
     grid-template-columns: 1fr;
-    gap: 48px;
+    gap: 40px;
+    padding: 0 20px;
   }
 
   .orb {
     left: 50%;
     width: 300px;
     height: 300px;
+    transform: translate(-50%, -50%);
   }
 
   .contact-section h1 {
-    font-size: clamp(56px, 14vw, 80px);
+    font-size: clamp(42px, 10vw, 80px);
+  }
+
+  .contact-section p {
+    font-size: 15px;
+  }
+
+  .email-row {
+    justify-content: center;
+  }
+
+  .social-links {
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-section {
+    padding: 40px 16px;
+    min-height: 100vh;
+  }
+
+  .contact-inner {
+    gap: 32px;
+  }
+
+  .orb {
+    width: 200px;
+    height: 200px;
+  }
+
+  .contact-section h1 {
+    font-size: clamp(32px, 8vw, 56px);
+    margin-bottom: 16px;
+  }
+
+  .contact-section p {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 50px;
+    height: 2px;
+  }
+
+  .email-row img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .email-link {
+    font-size: 14px;
+  }
+
+  .follow-label {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+
+  .social-card {
+    padding: 16px 20px;
+    gap: 16px;
+    border-radius: 10px;
+  }
+
+  .social-card img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .social-card span {
+    font-size: 14px;
   }
 }
 

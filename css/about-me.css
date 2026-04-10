@@ -173,22 +173,23 @@
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
-  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, transform 0.4s cubic-bezier(0.23, 1, 0.320, 1), box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .skill-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(250, 100, 0, 0.1), transparent);
+  background: linear-gradient(135deg, rgba(250, 100, 0, 0.15), transparent);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
 }
 
 .skill-card:hover {
-  border-color: rgba(250, 100, 0, 0.35);
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(250, 100, 0, 0.1);
+  border-color: rgba(250, 100, 0, 0.5);
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(250, 100, 0, 0.15), inset 0 0 30px rgba(250, 100, 0, 0.05);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .skill-card:hover::before {
@@ -225,15 +226,18 @@
 /* === Scroll Reveal — simple fade only === */
 .reveal {
   opacity: 0;
-  transition: opacity 0.7s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(20px);
 }
 
 .reveal.visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
 .reveal.hidden {
   opacity: 0;
+  transform: translateY(20px);
 }
 
 /* Staggered delay for skill cards */
@@ -246,8 +250,8 @@
 @media (max-width: 768px) {
   .grid-container {
     grid-template-columns: 1fr;
-    padding: 60px 30px;
-    gap: 48px;
+    padding: 40px 24px;
+    gap: 32px;
   }
 
   .left-side-pic::before,
@@ -255,18 +259,77 @@
 
   .left-side-pic img {
     max-width: 100%;
-    height: 340px;
+    height: 320px;
   }
 
-  .righ-side-text { text-align: center; }
-  .righ-side-text p { border-left: none; padding-left: 0; }
+  .righ-side-text { 
+    text-align: center; 
+  }
+
+  .righ-side-text h2 {
+    font-size: clamp(36px, 6vw, 56px);
+  }
+
+  .righ-side-text p { 
+    border-left: none; 
+    padding-left: 0;
+    font-size: 16px;
+  }
+
   .divider { margin: 0 auto; }
 
   .skills-section {
-    padding: 0 30px;
+    padding: 0 24px;
   }
 
   .skills-grid {
     grid-template-columns: 1fr;
+  }
+
+  .skill-card {
+    padding: 28px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    padding: 30px 16px;
+    gap: 24px;
+  }
+
+  .righ-side-text h2 {
+    font-size: clamp(28px, 5vw, 42px);
+  }
+
+  .righ-side-text p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .skills-section {
+    padding: 0 16px;
+    margin-bottom: 60px;
+  }
+
+  .skills-eyebrow {
+    font-size: 10px;
+  }
+
+  .skills-title {
+    font-size: clamp(32px, 5vw, 48px);
+  }
+
+  .skill-card {
+    padding: 20px 16px;
+    gap: 12px;
+  }
+
+  .skill-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .skill-name {
+    font-size: 16px;
   }
 }

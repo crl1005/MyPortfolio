@@ -1,6 +1,39 @@
 body {
-    background-color: #000000;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f0f1e 100%);
+    background-attachment: fixed;
+    font-family: 'DM Sans', Arial, sans-serif;
     margin: 0;
     padding: 0;
+    color: #fff;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+/* === Smooth scroll behavior === */
+html {
+    scroll-behavior: smooth;
+  }
+
+/* === Selection styling === */
+::selection {
+    background: rgb(250, 100, 0);
+    color: #000;
+  }
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+::-webkit-scrollbar-thumb {
+    background: rgb(250, 100, 0);
+    border-radius: 5px;
+  }
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ff6b35;
   }

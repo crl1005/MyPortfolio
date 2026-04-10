@@ -3,67 +3,509 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home — ESGUERRA</title>
+  <meta name="description" content="Carlos Esguerra - Aspiring Web Developer. Specializing in HTML, CSS, and JavaScript.">
+  <meta name="author" content="Carlos Esguerra">
+  <meta name="theme-color" content="#fa6400">
+  <title>ESGUERRA — Portfolio</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link rel="stylesheet" href="css/general.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/about-me.css">
+  <link rel="stylesheet" href="css/projects.css">
+  <link rel="stylesheet" href="css/contact.css">
+  <link rel="stylesheet" href="css/footer.css">
   <link rel="icon" href="favicon.png" type="image/png">
+
+  <style>
+    html { scroll-behavior: smooth; }
+    section[id], div[id] { scroll-margin-top: 80px; }
+
+    /* ── Typing Animation ── */
+    .typed-text {
+      color: #fa6400;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background-color: #fa6400;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    /* ── Contact Form ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 32px;
+      width: 100%;
+      max-width: 500px;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: #222;
+      background: #fafafa;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+      resize: none;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #fa6400;
+      background: #fff;
+    }
+    .contact-form textarea { height: 140px; }
+    .contact-form button {
+      padding: 14px 32px;
+      background: #fa6400;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .contact-form button:hover {
+      background: #d95500;
+      transform: translateY(-1px);
+    }
+    .contact-form button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .form-success {
+      display: none;
+      margin-top: 12px;
+      padding: 14px 18px;
+      background: #e6f9ee;
+      border: 1.5px solid #4caf50;
+      border-radius: 10px;
+      color: #2e7d32;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .form-error {
+      display: none;
+      margin-top: 12px;
+      padding: 14px 18px;
+      background: #ffeaea;
+      border: 1.5px solid #f44336;
+      border-radius: 10px;
+      color: #c62828;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    nav a.active { color: #fa6400; }
+  </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header class="header-section">
     <h1 class="name">ESGUERRA <span>Website</span></h1>
-    <nav><a class="active" href="index.html">Home</a></nav>
-    <nav><a href="aboutme.html">About</a></nav>
-    <nav><a href="projects.html">Projects</a></nav>
-    <nav><a href="contact.html">Contact</a></nav>
+    <nav><a href="#home">Home</a></nav>
+    <nav><a href="#about">About</a></nav>
+    <nav><a href="#projects">Projects</a></nav>
+    <nav><a href="#contact">Contact</a></nav>
     <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
   </header>
 
   <div class="mobile-nav" id="mobileNav">
-    <a class="active" href="index.html">Home</a>
-    <a href="aboutme.html">About</a>
-    <a href="projects.html">Projects</a>
-    <a href="contact.html">Contact</a>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
   </div>
 
-  <div class="grid-container">
-    <div class="left-side-text">
-      <h1>Hi, I'm <span>Carlos Esguerra</span></h1>
-      <p>Aspiring Website Developer</p>
-      <div class="cta-group">
-        <a href="projects.html" class="view-project">View Projects</a>
-        <a href="contact.html" class="contact">Contact Me</a>
+  <!-- HOME -->
+  <section id="home">
+    <div class="grid-container">
+      <div class="left-side-text">
+        <h1>Hi, I'm <span class="typed-text" id="typedText"></span><span class="cursor"></span></h1>
+        <p>Aspiring Website Developer</p>
+        <div class="cta-group">
+          <a href="#projects" class="view-project">View Projects</a>
+          <a href="#contact" class="contact">Contact Me</a>
+        </div>
+      </div>
+      <div class="right-side-pic">
+        <img src="img/picture-profile.jpg" alt="Carlos Esguerra">
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="grid-container">
+      <div class="left-side-pic reveal">
+        <img src="img/about-me.jpg" alt="Carlos Esguerra">
+      </div>
+      <div class="righ-side-text reveal">
+        <h2>Who Am <span>I?</span></h2>
+        <div class="divider"></div>
+        <p>I am an incoming freshman college student seeking freelance or project-based opportunities to gain hands-on experience in web development. I am eager to work on real projects and learn through practical experience with clients.</p>
+        <p>I develop landing pages, portfolio websites, and simple business websites, focusing on clean, responsive, and user-friendly design. I am committed to delivering organized and functional websites that meet client requirements.</p>
+        <p>My rates are affordable and negotiable depending on the project scope. If you are interested in working together, please feel free to send me a message.</p>
       </div>
     </div>
 
-    <div class="right-side-pic">
-      <img src="img/picture-profile.jpg" alt="Carlos Esguerra">
-    </div>
-  </div>
+    <div class="skills-section">
+      <div class="skills-header reveal">
+        <span class="skills-eyebrow">WHAT I WORK WITH</span>
+        <h2 class="skills-title">Current <span>Skills</span></h2>
+      </div>
 
-</body>
+      <div class="skills-category reveal">
+        <h3 class="skills-category-title">Front End</h3>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-icon"><img src="img/html.JPG" alt="HTML"></div>
+            <span class="skill-name">HTML</span>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon"><img src="img/css.JPG" alt="CSS"></div>
+            <span class="skill-name">CSS</span>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+            </div>
+            <span class="skill-name">JavaScript</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-category reveal">
+        <h3 class="skills-category-title">Frameworks</h3>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React">
+            </div>
+            <span class="skill-name">React</span>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" style="filter:invert(1);">
+            </div>
+            <span class="skill-name">Next.js</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skills-category reveal">
+        <h3 class="skills-category-title">Tools</h3>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-icon"><img src="img/github.JPG" alt="GitHub"></div>
+            <span class="skill-name">GitHub</span>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git">
+            </div>
+            <span class="skill-name">Git</span>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">
+              <img src="https://sl.bing.net/i2AavSfeNsy" alt="Wave Terminal">
+            </div>
+            <span class="skill-name">Wave Terminal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h1 class="body-header">MY PROJECTS</h1>
+    <div class="container">
+
+      <div class="project1">
+        <div class="thumbnail">
+          <div class="thumbnail-bar"></div>
+          <div class="thumbnail-img-wrap">
+            <img src="img/poet.JPG" alt="Price Of Every Tomorrow">
+          </div>
+        </div>
+        <div class="project1-description">
+          <h2>Price Of Every Tomorrow</h2>
+          <p>An interactive web-based game exploring real-life social issues through meaningful choices and storytelling. Focuses on hunger, inequality, and survival.</p>
+          <div class="tags">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span>
+          </div>
+          <a href="https://priceofeverytomorrow.online/" class="view-btn" target="_blank">View Project</a>
+        </div>
+      </div>
+
+      <div class="project2">
+        <div class="thumbnail">
+          <div class="thumbnail-bar"></div>
+          <div class="thumbnail-img-wrap empty">
+            <span class="placeholder-text">Coming Soon</span>
+          </div>
+        </div>
+        <div class="project2-description">
+          <h2>Project Title</h2>
+          <p>Project description goes here.</p>
+          <div class="tags"><span>HTML</span><span>CSS</span></div>
+          <a href="#" class="view-btn">View Project</a>
+        </div>
+      </div>
+
+      <div class="projects">
+        <div class="thumbnail">
+          <div class="thumbnail-bar"></div>
+          <div class="thumbnail-img-wrap empty">
+            <span class="placeholder-text">Coming Soon</span>
+          </div>
+        </div>
+        <div class="projects-description">
+          <h2>Project Title</h2>
+          <p>Project description goes here.</p>
+          <div class="tags"><span>HTML</span><span>CSS</span></div>
+          <a href="#" class="view-btn">View Project</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="projects-footer">
+      <p>I would like to put future client's projects that can be added to my website portfolio.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact-section">
+    <div class="orb"></div>
+    <div class="contact-inner">
+
+      <div class="contact-text">
+        <h1>Contact<br><span class="accent">Me</span></h1>
+        <p>Feel free to reach out for any inquiries, collaborations, or freelance opportunities. I am open to discussing potential projects where I can contribute my skills and expertise.</p>
+
+        <div class="email-row">
+          <a href="mailto:carlosesguerra001@gmail.com" class="email-link">carlosesguerra001@gmail.com</a>
+        </div>
+
+        <form class="contact-form" id="contactForm">
+          <input type="text" name="name" id="name" placeholder="Your Name" required />
+          <input type="email" name="email" id="email" placeholder="Your Email" required />
+          <textarea name="message" id="message" placeholder="Your Message" required></textarea>
+          <button type="submit" id="submitBtn">Send Message</button>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          ✅ Message sent! I'll get back to you soon.
+        </div>
+        <div class="form-error" id="formError">
+          ❌ Something went wrong. Please try again or email me directly.
+        </div>
+      </div>
+
+      <div class="contact-right">
+        <p class="follow-label">FOLLOW ME ON</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/HAHAHAHAHAHAAHsadboyMode" class="social-card" target="_blank">
+            <img src="img/fb-icon.png" alt="Facebook">
+            <span>Facebook</span>
+          </a>
+          <a href="https://www.instagram.com/nwl_crl/" class="social-card" target="_blank">
+            <img src="img/instagram-icon.png" alt="Instagram">
+            <span>Instagram</span>
+          </a>
+          <a href="https://www.tiktok.com/@zikatiqt" class="social-card" target="_blank">
+            <img src="img/tiktok-icon.png" alt="TikTok">
+            <span>TikTok</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About</h3>
+        <p>An aspiring web developer crafting beautiful, responsive digital experiences. Specializing in clean code and modern design.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <div class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#about">About</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <div class="footer-socials">
+          <a href="https://www.facebook.com/HAHAHAHAHAHAAHsadboyMode" class="footer-social-link" title="Facebook" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com/nwl_crl/" class="footer-social-link" title="Instagram" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.tiktok.com/@zikatiqt" class="footer-social-link" title="TikTok" target="_blank">
+            <i class="fab fa-tiktok"></i>
+          </a>
+        </div>
+        <p style="margin-top:20px;font-size:13px;">Email: carlosesguerra001@gmail.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Carlos Esguerra. All rights reserved. | Designed & Built by Carlos Esguerra</p>
+    </div>
+  </footer>
 
   <script>
-    // Hamburger menu
+    // ── EmailJS Init ──
+    emailjs.init('S0WK4cZR-Wn_xRNgN');
+
+    // ── Typing Animation ──
+    const phrases = [
+      'Carlos Esguerra',
+      'an Incoming Freshman',
+      'a Freelancer',
+    ];
+
+    const typedText = document.getElementById('typedText');
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typeSpeed = 90;
+    const deleteSpeed = 50;
+    const pauseAfterType = 1800;
+    const pauseAfterDelete = 400;
+
+    function type() {
+      const current = phrases[phraseIndex];
+
+      if (!isDeleting) {
+        typedText.textContent = current.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === current.length) {
+          isDeleting = true;
+          setTimeout(type, pauseAfterType);
+          return;
+        }
+        setTimeout(type, typeSpeed);
+      } else {
+        typedText.textContent = current.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+          setTimeout(type, pauseAfterDelete);
+          return;
+        }
+        setTimeout(type, deleteSpeed);
+      }
+    }
+
+    setTimeout(type, 500);
+
+    // ── Hamburger ──
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
-
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       mobileNav.classList.toggle('open');
     });
-
     mobileNav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('open');
         mobileNav.classList.remove('open');
       });
     });
+
+    // ── Scroll Reveal ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.classList.remove('hidden');
+        } else {
+          entry.target.classList.remove('visible');
+          entry.target.classList.add('hidden');
+        }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Active nav on scroll ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('header nav a, .mobile-nav a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        if (window.scrollY >= section.offsetTop - 120) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // ── Contact Form (EmailJS) ──
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('formSuccess');
+    const errorMsg = document.getElementById('formError');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      const templateParams = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value,
+      };
+
+      emailjs.send('service_wztcbmt', 'template_qwtejgc', templateParams)
+        .then(() => {
+          form.reset();
+          successMsg.style.display = 'block';
+          errorMsg.style.display = 'none';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+          setTimeout(() => successMsg.style.display = 'none', 5000);
+        })
+        .catch(() => {
+          errorMsg.style.display = 'block';
+          successMsg.style.display = 'none';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        });
+    });
   </script>
 
+</body>
 </html>
