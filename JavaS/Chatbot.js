@@ -183,7 +183,7 @@
         el(
           'div',
           { id: 'chatbot-header-text' },
-          el('h4', {}, 'Ask Carlos'),
+          el('h4', {}, 'Ask Crl'),
           el('span', {}, '● Online now')
         ),
         el('button', { id: 'chatbot-close', 'aria-label': 'Close chat', html: '&times;' })
