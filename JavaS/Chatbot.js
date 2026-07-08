@@ -201,8 +201,8 @@
     registerTrackedFace(avatarFace, avatarWrap);
 
     root.appendChild(bubble);
-    root.appendChild(panel);
-    document.body.appendChild(root);
+    appendChild(panel);
+    document.documentElement.appendChild(root);
 
     return { bubble, panel };
   }

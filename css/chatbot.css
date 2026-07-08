@@ -52,8 +52,8 @@
 #chatbot-bubble .chatbot-dot {
   position: absolute;
   top: -2px;
-  right: -2px;
-  width: 14px;
+  right: 28px;
+  width: 28px;
   height: 14px;
   border-radius: 50%;
   background: #ff3c00;
@@ -63,7 +63,7 @@
 
 /* ---- Chat panel ---- */
 #chatbot-panel {
-  position: fixed;
+  position: absolute;
   bottom: 100px;
   right: 28px;
   width: 370px;
@@ -471,4 +471,13 @@
     right: 20px;
     bottom: 20px;
   }
+}
+
+#chatbot-root {
+  position: fixed !important;
+  inset: 0;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  z-index: 999999;
 }
