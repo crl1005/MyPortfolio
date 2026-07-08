@@ -2,15 +2,15 @@
   const API_URL = '/api/chat';
 
   const WELCOME_MESSAGE =
-    "Hi! I'm Carlos's portfolio assistant 👋 Ask me about his projects, skills, pricing, or how to get in touch.";
+    "Hi! I'm Carlos's portfolio assistant! Ask me about his projects, skills, pricing, or how to get in touch.";
 
   const QUICK_REPLIES = [
-    { label: '🗂️ Projects', prompt: 'What projects has Carlos built?' },
-    { label: '🛠️ Skills', prompt: "What are Carlos's technical skills?" },
-    { label: '💰 Pricing', prompt: 'How much does Carlos charge for a project?' },
-    { label: '⏱️ Timeline', prompt: 'How long does a typical project take?' },
-    { label: '📅 Availability', prompt: 'Is Carlos available for new projects right now?' },
-    { label: '📩 Contact', prompt: 'How can I contact Carlos for freelance work?' },
+    { label: ' Projects', prompt: 'What projects has Carlos built?' },
+    { label: ' Skills', prompt: "What are Carlos's technical skills?" },
+    { label: ' Pricing', prompt: 'How much does Carlos charge for a project?' },
+    { label: ' Timeline', prompt: 'How long does a typical project take?' },
+    { label: ' Availability', prompt: 'Is Carlos available for new projects right now?' },
+    { label: ' Contact', prompt: 'How can I contact Carlos for freelance work?' },
   ];
 
   let history = [];
@@ -30,9 +30,6 @@
     return node;
   }
 
-  // ---------------------------------------------------------------------
-  // Cute cursor-following face with emotion states
-  // ---------------------------------------------------------------------
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
   const EMOTIONS = {
@@ -337,7 +334,6 @@
     const input = document.getElementById('chatbot-input');
     const sendBtn = document.getElementById('chatbot-send');
 
-    // Curious little glance when you hover the bubble (only while closed)
     bubble.addEventListener('mouseenter', () => {
       if (!panel.classList.contains('chatbot-open')) {
         setEmotionTemporarily('curious', 900);
@@ -382,7 +378,6 @@
       input.style.height = Math.min(input.scrollHeight, 96) + 'px';
     });
 
-    // Attentive look while typing, relax back to idle on blur
     input.addEventListener('focus', () => setEmotion('curious'));
     input.addEventListener('blur', () => setEmotion('idle'));
   }
