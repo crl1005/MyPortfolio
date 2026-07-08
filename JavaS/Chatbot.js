@@ -1,15 +1,21 @@
 (function () {
-  // ⚠️ Update this if your API is hosted on a different domain than your site.
-  // Same-domain example (site deployed on Vercel): '/api/chat'
-  // Cross-domain example (site on GitHub Pages, API on Vercel):
-  //   'https://your-project-name.vercel.app/api/chat'
+  // ⚠️ Same-domain deploy on Vercel: leave as '/api/chat'.
+  // Cross-domain (site elsewhere, API on Vercel): use full URL,
+  // e.g. 'https://your-project-name.vercel.app/api/chat'
   const API_URL = '/api/chat';
 
   const WELCOME_MESSAGE =
     "Hi! I'm Carlos's portfolio assistant 👋 Ask me about his projects, skills, or how to get in touch.";
 
+  const QUICK_REPLIES = [
+    { label: 'View projects', prompt: 'What projects has Carlos built?' },
+    { label: 'His skills', prompt: "What are Carlos's technical skills?" },
+    { label: 'Get in touch', prompt: 'How can I contact Carlos for freelance work?' },
+  ];
+
   let history = []; // { role: 'user' | 'assistant', content: string }
   let isSending = false;
+  let welcomed = false;
 
   function el(tag, attrs, ...children) {
     const node = document.createElement(tag);
@@ -44,13 +50,20 @@
         { id: 'chatbot-header' },
         el(
           'div',
-          {},
+          { id: 'chatbot-avatar' },
+          'C',
+          el('div', { class: 'chatbot-status' })
+        ),
+        el(
+          'div',
+          { id: 'chatbot-header-text' },
           el('h4', {}, 'Ask Carlos'),
-          el('span', {}, "AI assistant · usually replies instantly")
+          el('span', {}, '● Online now')
         ),
         el('button', { id: 'chatbot-close', 'aria-label': 'Close chat', html: '&times;' })
       ),
       el('div', { id: 'chatbot-messages' }),
+      el('div', { id: 'chatbot-quick-replies' }),
       el(
         'div',
         { id: 'chatbot-input-row' },
@@ -64,7 +77,8 @@
           'aria-label': 'Send',
           html: `<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>`,
         })
-      )
+      ),
+      el('div', { id: 'chatbot-footer-note' }, 'Powered by Gemini')
     );
 
     root.appendChild(bubble);
@@ -76,28 +90,62 @@
 
   function appendMessage(role, text) {
     const messages = document.getElementById('chatbot-messages');
-    const msg = el('div', { class: `chatbot-msg ${role}` }, text);
-    messages.appendChild(msg);
+    const row = el('div', { class: `chatbot-row ${role}` });
+
+    if (role === 'bot') {
+      row.appendChild(el('div', { class: 'chatbot-mini-avatar' }, 'C'));
+    }
+
+    const bubble = el('div', { class: `chatbot-msg ${role}` });
+    text.split('\n').forEach((line, i) => {
+      if (i > 0) bubble.appendChild(el('br'));
+      bubble.appendChild(document.createTextNode(line));
+    });
+
+    row.appendChild(bubble);
+    messages.appendChild(row);
     messages.scrollTop = messages.scrollHeight;
-    return msg;
+    return row;
   }
 
   function showTyping() {
     const messages = document.getElementById('chatbot-messages');
-    const typing = el(
+    const row = el(
       'div',
-      { class: 'chatbot-msg typing', id: 'chatbot-typing' },
-      el('span'),
-      el('span'),
-      el('span')
+      { class: 'chatbot-row bot', id: 'chatbot-typing-row' },
+      el('div', { class: 'chatbot-mini-avatar' }, 'C'),
+      el(
+        'div',
+        { class: 'chatbot-msg bot typing' },
+        el('span'),
+        el('span'),
+        el('span')
+      )
     );
-    messages.appendChild(typing);
+    messages.appendChild(row);
     messages.scrollTop = messages.scrollHeight;
   }
 
   function hideTyping() {
-    const typing = document.getElementById('chatbot-typing');
-    if (typing) typing.remove();
+    const row = document.getElementById('chatbot-typing-row');
+    if (row) row.remove();
+  }
+
+  function clearQuickReplies() {
+    document.getElementById('chatbot-quick-replies').innerHTML = '';
+  }
+
+  function showQuickReplies() {
+    const container = document.getElementById('chatbot-quick-replies');
+    container.innerHTML = '';
+    QUICK_REPLIES.forEach((qr) => {
+      const chip = el('button', { class: 'chatbot-chip' }, qr.label);
+      chip.addEventListener('click', () => {
+        clearQuickReplies();
+        sendMessage(qr.prompt);
+      });
+      container.appendChild(chip);
+    });
   }
 
   async function sendMessage(text) {
@@ -107,10 +155,12 @@
     const sendBtn = document.getElementById('chatbot-send');
     const input = document.getElementById('chatbot-input');
     sendBtn.disabled = true;
+    clearQuickReplies();
 
     appendMessage('user', text);
     history.push({ role: 'user', content: text });
     input.value = '';
+    input.style.height = 'auto';
     showTyping();
 
     try {
@@ -144,14 +194,15 @@
     const input = document.getElementById('chatbot-input');
     const sendBtn = document.getElementById('chatbot-send');
 
-    let welcomed = false;
-
     bubble.addEventListener('click', () => {
       panel.classList.toggle('chatbot-open');
+      bubble.classList.toggle('chatbot-active');
+
       if (panel.classList.contains('chatbot-open')) {
         bubble.querySelector('.chatbot-dot').style.display = 'none';
         if (!welcomed) {
           appendMessage('bot', WELCOME_MESSAGE);
+          showQuickReplies();
           welcomed = true;
         }
         input.focus();
@@ -160,6 +211,7 @@
 
     closeBtn.addEventListener('click', () => {
       panel.classList.remove('chatbot-open');
+      bubble.classList.remove('chatbot-active');
     });
 
     sendBtn.addEventListener('click', () => sendMessage(input.value));
@@ -171,7 +223,6 @@
       }
     });
 
-    // auto-grow textarea up to 4 lines
     input.addEventListener('input', () => {
       input.style.height = 'auto';
       input.style.height = Math.min(input.scrollHeight, 96) + 'px';
