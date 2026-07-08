@@ -31,6 +31,7 @@
 #chatbot-bubble:hover {
   transform: translateY(-3px) scale(1.06);
   box-shadow: 0 12px 40px rgba(250, 100, 0, 0.5);
+  animation: chatbot-pulse 2.4s ease-in-out infinite, chatbot-wiggle 0.4s ease-in-out;
 }
 
 #chatbot-bubble:active {
@@ -40,6 +41,12 @@
 @keyframes chatbot-pulse {
   0%, 100% { box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 0 rgba(250,100,0,0.35); }
   50%      { box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 14px rgba(250,100,0,0); }
+}
+
+@keyframes chatbot-wiggle {
+  0%, 100% { rotate: 0deg; }
+  25%      { rotate: -6deg; }
+  75%      { rotate: 6deg; }
 }
 
 #chatbot-bubble .chatbot-dot {
@@ -293,12 +300,19 @@
   padding: 7px 14px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  opacity: 0;
+  animation: chatbot-chip-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .chatbot-chip:hover {
   background: rgba(250, 100, 0, 0.2);
   border-color: rgba(250, 100, 0, 0.6);
   transform: translateY(-1px);
+}
+
+@keyframes chatbot-chip-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ---- Input row ---- */
@@ -408,25 +422,11 @@
   stroke: #0f0f0f;
   stroke-width: 4;
   stroke-linecap: round;
+  transition: d 0.2s ease;
 }
 
 .chatbot-mini-avatar .chatbot-face-mouth {
   stroke-width: 5;
-}
-
-/* ---- Mobile ---- */
-@media (max-width: 480px) {
-  #chatbot-panel {
-    right: 16px;
-    left: 16px;
-    width: auto;
-    bottom: 92px;
-    height: 68vh;
-  }
-  #chatbot-bubble {
-    right: 20px;
-    bottom: 20px;
-  }
 }
 
 /* ---- Emotion bounce + sparkle burst ---- */
@@ -458,22 +458,17 @@
   z-index: 5;
 }
 
-/* ---- Playful bubble wiggle on hover (adds to the existing lift) ---- */
-@keyframes chatbot-wiggle {
-  0%, 100% { rotate: 0deg; }
-  25%      { rotate: -6deg; }
-  75%      { rotate: 6deg; }
-}
-#chatbot-bubble:hover {
-  animation: chatbot-wiggle 0.4s ease-in-out;
-}
-
-/* ---- Staggered chip pop-in ---- */
-@keyframes chatbot-chip-pop {
-  from { opacity: 0; transform: translateY(6px) scale(0.9); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-.chatbot-chip {
-  opacity: 0;
-  animation: chatbot-chip-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+/* ---- Mobile ---- */
+@media (max-width: 480px) {
+  #chatbot-panel {
+    right: 16px;
+    left: 16px;
+    width: auto;
+    bottom: 92px;
+    height: 68vh;
+  }
+  #chatbot-bubble {
+    right: 20px;
+    bottom: 20px;
+  }
 }
