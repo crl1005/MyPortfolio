@@ -1,7 +1,4 @@
 (function () {
-  // ⚠️ Same-domain deploy on Vercel: leave as '/api/chat'.
-  // Cross-domain (site elsewhere, API on Vercel): use full URL,
-  // e.g. 'https://your-project-name.vercel.app/api/chat'
   const API_URL = '/api/chat';
 
   const WELCOME_MESSAGE =
@@ -16,7 +13,7 @@
     { label: '📩 Contact', prompt: 'How can I contact Carlos for freelance work?' },
   ];
 
-  let history = []; // { role: 'user' | 'assistant', content: string }
+  let history = [];
   let isSending = false;
   let welcomed = false;
 
@@ -34,19 +31,22 @@
   }
 
   // ---------------------------------------------------------------------
-  // Cute cursor-following face with a few emotion states
+  // Cute cursor-following face with emotion states
   // ---------------------------------------------------------------------
   const SVG_NS = 'http://www.w3.org/2000/svg';
 
   const EMOTIONS = {
-    idle: { mouth: 'M 36 66 Q 50 78 64 66', eyeRy: 13 },
-    thinking: { mouth: 'M 40 70 Q 50 65 60 70', eyeRy: 8 },
-    happy: { mouth: 'M 30 60 Q 50 86 70 60', eyeRy: 15 },
-    sad: { mouth: 'M 36 74 Q 50 63 64 74', eyeRy: 10 },
-    love: { mouth: 'M 32 62 Q 50 82 68 62', eyeRy: 15 },
-    excited: { mouth: 'M 30 58 Q 50 88 70 58', eyeRy: 16 },
-    wink: { mouth: 'M 34 64 Q 50 76 66 64', eyeRy: 13 },
+    idle:      { mouth: 'M 36 66 Q 50 78 64 66', eyeRy: 13 },
+    thinking:  { mouth: 'M 40 70 Q 50 65 60 70', eyeRy: 8 },
+    happy:     { mouth: 'M 30 60 Q 50 86 70 60', eyeRy: 15 },
+    sad:       { mouth: 'M 36 74 Q 50 63 64 74', eyeRy: 10 },
+    love:      { mouth: 'M 32 62 Q 50 82 68 62', eyeRy: 15 },
+    excited:   { mouth: 'M 30 58 Q 50 88 70 58', eyeRy: 16 },
+    wink:      { mouth: 'M 34 64 Q 50 76 66 64', eyeRy: 13 },
     surprised: { mouth: 'M 42 68 Q 50 80 58 68', eyeRy: 16 },
+    sleepy:    { mouth: 'M 38 68 Q 50 72 62 68', eyeRy: 4 },
+    curious:   { mouth: 'M 44 68 Q 50 74 56 68', eyeRy: 15 },
+    shy:       { mouth: 'M 40 68 Q 50 74 60 68', eyeRy: 9 },
   };
 
   function createFaceSVG(extraClass) {
@@ -54,8 +54,10 @@
     svg.setAttribute('viewBox', '0 0 100 100');
     svg.setAttribute('class', `chatbot-face ${extraClass || ''}`);
     svg.innerHTML = `
-      <circle class="chatbot-face-blush" cx="18" cy="63" r="7"></circle>
-      <circle class="chatbot-face-blush" cx="82" cy="63" r="7"></circle>
+      <path class="chatbot-face-bow" d="M 50 8 L 40 2 L 40 14 Z M 50 8 L 60 2 L 60 14 Z" ></path>
+      <circle class="chatbot-face-bow-knot" cx="50" cy="8" r="3.5"></circle>
+      <circle class="chatbot-face-blush" cx="16" cy="64" r="8"></circle>
+      <circle class="chatbot-face-blush" cx="84" cy="64" r="8"></circle>
       <g class="chatbot-eye chatbot-eye-left">
         <ellipse cx="32" cy="46" rx="11" ry="13"></ellipse>
         <circle class="chatbot-pupil" cx="32" cy="46" r="5"></circle>
@@ -69,9 +71,7 @@
     return svg;
   }
 
-  // Only the two persistent, larger faces (bubble + header avatar) get live
-  // cursor tracking and emotion changes. Per-message mini avatars stay static.
-  const trackedFaces = []; // { svg, left, right, wrap }
+  const trackedFaces = [];
   let mouseX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
   let mouseY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
   const PUPIL_MAX_OFFSET = 3.2;
@@ -113,7 +113,6 @@
     trackedFaces.forEach(({ wrap }) => {
       if (!wrap) return;
       wrap.classList.remove('chatbot-bounce');
-      // force reflow so the animation can retrigger if already present
       void wrap.offsetWidth;
       wrap.classList.add('chatbot-bounce');
       setTimeout(() => wrap.classList.remove('chatbot-bounce'), 500);
@@ -159,7 +158,6 @@
     setTimeout(blinkLoop, 2200);
   }
 
-  // Small static face used inside per-message avatars (no tracking).
   function miniAvatarNode() {
     return el('div', { class: 'chatbot-mini-avatar' }, createFaceSVG('chatbot-face-mini'));
   }
@@ -267,13 +265,11 @@
     document.getElementById('chatbot-quick-replies').innerHTML = '';
   }
 
-  // Renders the quick-reply chips with a staggered pop-in, one after another.
-  // Called again after every bot reply so the visitor can keep browsing topics.
   function showQuickReplies() {
     const container = document.getElementById('chatbot-quick-replies');
     container.innerHTML = '';
     container.classList.remove('chatbot-chips-return');
-    void container.offsetWidth; // restart animation each time
+    void container.offsetWidth;
     container.classList.add('chatbot-chips-return');
     QUICK_REPLIES.forEach((qr, i) => {
       const chip = el('button', { class: 'chatbot-chip' }, qr.label);
@@ -322,7 +318,6 @@
         bounceAndSparkle();
       }
 
-      // Bring the prepared questions back so the visitor can keep browsing.
       showQuickReplies();
     } catch (err) {
       hideTyping();
@@ -342,24 +337,35 @@
     const input = document.getElementById('chatbot-input');
     const sendBtn = document.getElementById('chatbot-send');
 
+    // Curious little glance when you hover the bubble (only while closed)
+    bubble.addEventListener('mouseenter', () => {
+      if (!panel.classList.contains('chatbot-open')) {
+        setEmotionTemporarily('curious', 900);
+      }
+    });
+
     bubble.addEventListener('click', () => {
       panel.classList.toggle('chatbot-open');
       bubble.classList.toggle('chatbot-active');
 
       if (panel.classList.contains('chatbot-open')) {
         bubble.querySelector('.chatbot-dot').style.display = 'none';
+        setEmotionTemporarily('excited', 1000);
         if (!welcomed) {
           appendMessage('bot', WELCOME_MESSAGE);
           showQuickReplies();
           welcomed = true;
         }
         input.focus();
+      } else {
+        setEmotionTemporarily('sleepy', 900);
       }
     });
 
     closeBtn.addEventListener('click', () => {
       panel.classList.remove('chatbot-open');
       bubble.classList.remove('chatbot-active');
+      setEmotionTemporarily('shy', 900);
     });
 
     sendBtn.addEventListener('click', () => sendMessage(input.value));
@@ -375,6 +381,10 @@
       input.style.height = 'auto';
       input.style.height = Math.min(input.scrollHeight, 96) + 'px';
     });
+
+    // Attentive look while typing, relax back to idle on blur
+    input.addEventListener('focus', () => setEmotion('curious'));
+    input.addEventListener('blur', () => setEmotion('idle'));
   }
 
   if (document.readyState === 'loading') {
