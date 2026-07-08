@@ -43,6 +43,10 @@
     thinking: { mouth: 'M 40 70 Q 50 65 60 70', eyeRy: 8 },
     happy: { mouth: 'M 30 60 Q 50 86 70 60', eyeRy: 15 },
     sad: { mouth: 'M 36 74 Q 50 63 64 74', eyeRy: 10 },
+    love: { mouth: 'M 32 62 Q 50 82 68 62', eyeRy: 15 },
+    excited: { mouth: 'M 30 58 Q 50 88 70 58', eyeRy: 16 },
+    wink: { mouth: 'M 34 64 Q 50 76 66 64', eyeRy: 13 },
+    surprised: { mouth: 'M 42 68 Q 50 80 58 68', eyeRy: 16 },
   };
 
   function createFaceSVG(extraClass) {
@@ -91,11 +95,19 @@
     });
   }
 
+  const HAPPY_EMOTIONS = ['happy', 'love', 'excited', 'wink'];
+
   function setEmotionTemporarily(name, holdMs) {
     if (emotionResetTimer) clearTimeout(emotionResetTimer);
     setEmotion(name);
     emotionResetTimer = setTimeout(() => setEmotion('idle'), holdMs);
   }
+
+  function randomHappyEmotion() {
+    return HAPPY_EMOTIONS[Math.floor(Math.random() * HAPPY_EMOTIONS.length)];
+  }
+
+  const SPARKLE_ICONS = ['✨', '💕', '⭐', '😊', '🌟'];
 
   function bounceAndSparkle() {
     trackedFaces.forEach(({ wrap }) => {
@@ -106,7 +118,8 @@
       wrap.classList.add('chatbot-bounce');
       setTimeout(() => wrap.classList.remove('chatbot-bounce'), 500);
 
-      const sparkle = el('span', { class: 'chatbot-sparkle' }, '✨');
+      const icon = SPARKLE_ICONS[Math.floor(Math.random() * SPARKLE_ICONS.length)];
+      const sparkle = el('span', { class: 'chatbot-sparkle' }, icon);
       wrap.appendChild(sparkle);
       setTimeout(() => sparkle.remove(), 800);
     });
@@ -255,9 +268,13 @@
   }
 
   // Renders the quick-reply chips with a staggered pop-in, one after another.
+  // Called again after every bot reply so the visitor can keep browsing topics.
   function showQuickReplies() {
     const container = document.getElementById('chatbot-quick-replies');
     container.innerHTML = '';
+    container.classList.remove('chatbot-chips-return');
+    void container.offsetWidth; // restart animation each time
+    container.classList.add('chatbot-chips-return');
     QUICK_REPLIES.forEach((qr, i) => {
       const chip = el('button', { class: 'chatbot-chip' }, qr.label);
       chip.style.animationDelay = `${i * 0.06}s`;
@@ -301,7 +318,7 @@
       } else {
         appendMessage('bot', data.reply);
         history.push({ role: 'assistant', content: data.reply });
-        setEmotionTemporarily('happy', 1600);
+        setEmotionTemporarily(randomHappyEmotion(), 1600);
         bounceAndSparkle();
       }
 
