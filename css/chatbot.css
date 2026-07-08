@@ -3,6 +3,23 @@
    ESGUERRA portfolio theme
    ============================ */
 
+#chatbot-root {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+#chatbot-root > * {
+  pointer-events: auto;
+}
+
 #chatbot-root * {
   box-sizing: border-box;
   font-family: 'DM Sans', sans-serif;
@@ -10,7 +27,7 @@
 
 /* ---- Floating bubble ---- */
 #chatbot-bubble {
-  position: fixed;
+  position: absolute;
   bottom: 28px;
   right: 28px;
   width: 60px;
@@ -59,10 +76,6 @@
   background: #ff3c00;
   border: 2px solid #0f0f0f;
   z-index: 2;
-}
-
-#chatbot-quick-replies.chatbot-chips-return .chatbot-chip {
-  animation: chatbot-chip-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 /* ---- Chat panel ---- */
@@ -391,7 +404,7 @@
   letter-spacing: 0.3px;
 }
 
-/* ---- Cute cursor-following face (replaces old "C" letter avatars) ---- */
+/* ---- Cute cursor-following face ---- */
 .chatbot-face {
   width: 100%;
   height: 100%;
@@ -434,10 +447,6 @@
 }
 
 /* ---- Emotion bounce + sparkle burst ---- */
-#chatbot-bubble, #chatbot-avatar {
-  position: relative;
-}
-
 @keyframes chatbot-bounce-pop {
   0%   { transform: scale(1); }
   35%  { transform: scale(1.18); }
@@ -462,6 +471,10 @@
   z-index: 5;
 }
 
+#chatbot-quick-replies.chatbot-chips-return .chatbot-chip {
+  animation: chatbot-chip-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
 /* ---- Mobile ---- */
 @media (max-width: 480px) {
   #chatbot-panel {
@@ -475,21 +488,4 @@
     right: 20px;
     bottom: 20px;
   }
-}
-
-#chatbot-root {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 999999;
-}
-
-#chatbot-root > * {
-  pointer-events: auto;
 }
