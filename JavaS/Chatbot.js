@@ -5,12 +5,18 @@
   const API_URL = '/api/chat';
 
   const WELCOME_MESSAGE =
-    "Hi! I'm Carlos's portfolio assistant 👋 Ask me about his projects, skills, or how to get in touch.";
+    "Hi! I'm Carlos's portfolio assistant 👋 Ask me about his projects, skills, pricing, or how to get in touch.";
 
+  // Expanded to cover the most common visitor questions (pricing, timeline,
+  // availability) so there's one clear set of chips instead of a separate
+  // "FAQ" concept layered on top of "quick replies".
   const QUICK_REPLIES = [
-    { label: 'View projects', prompt: 'What projects has Carlos built?' },
-    { label: 'His skills', prompt: "What are Carlos's technical skills?" },
-    { label: 'Get in touch', prompt: 'How can I contact Carlos for freelance work?' },
+    { label: 'Projects', prompt: 'What projects has Carlos built?' },
+    { label: 'Skills', prompt: "What are Carlos's technical skills?" },
+    { label: 'Pricing', prompt: 'How much does Carlos charge for a project?' },
+    { label: 'Timeline', prompt: 'How long does a typical project take?' },
+    { label: 'Availability', prompt: 'Is Carlos available for new projects right now?' },
+    { label: 'Contact', prompt: 'How can I contact Carlos for freelance work?' },
   ];
 
   let history = []; // { role: 'user' | 'assistant', content: string }
@@ -30,30 +36,111 @@
     return node;
   }
 
+  // ---------------------------------------------------------------------
+  // Cute cursor-following face
+  // Draws just the eyes/blush/mouth (transparent background) so it sits on
+  // top of whatever circular, gradient-filled container it's placed in
+  // (the bubble button, the header avatar, or a mini message avatar) —
+  // no need to redraw a duplicate head circle underneath.
+  // ---------------------------------------------------------------------
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  function createFaceSVG(extraClass) {
+    const svg = document.createElementNS(SVG_NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('class', `chatbot-face ${extraClass || ''}`);
+    svg.innerHTML = `
+      <circle class="chatbot-face-blush" cx="18" cy="63" r="7"></circle>
+      <circle class="chatbot-face-blush" cx="82" cy="63" r="7"></circle>
+      <g class="chatbot-eye chatbot-eye-left">
+        <ellipse cx="32" cy="46" rx="11" ry="13"></ellipse>
+        <circle class="chatbot-pupil" cx="32" cy="46" r="5"></circle>
+      </g>
+      <g class="chatbot-eye chatbot-eye-right">
+        <ellipse cx="68" cy="46" rx="11" ry="13"></ellipse>
+        <circle class="chatbot-pupil" cx="68" cy="46" r="5"></circle>
+      </g>
+      <path class="chatbot-face-mouth" d="M 36 66 Q 50 78 64 66"></path>
+    `;
+    return svg;
+  }
+
+  // Only the two persistent, larger faces (bubble + header avatar) get live
+  // cursor tracking. Per-message mini avatars stay static — tracking every
+  // message face too would mean an ever-growing, unnecessary registry for
+  // avatars that scroll out of view anyway.
+  const trackedFaces = []; // { svg, left, right }
+  let mouseX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
+  let mouseY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
+  const PUPIL_MAX_OFFSET = 3.2;
+
+  function registerTrackedFace(svg) {
+    trackedFaces.push({
+      svg,
+      left: svg.querySelector('.chatbot-eye-left .chatbot-pupil'),
+      right: svg.querySelector('.chatbot-eye-right .chatbot-pupil'),
+    });
+  }
+
+  function updateEyes() {
+    trackedFaces.forEach(({ svg, left, right }) => {
+      const rect = svg.getBoundingClientRect();
+      if (!rect.width) return;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = mouseX - cx;
+      const dy = mouseY - cy;
+      const dist = Math.hypot(dx, dy) || 1;
+      const offX = (dx / dist) * PUPIL_MAX_OFFSET;
+      const offY = (dy / dist) * PUPIL_MAX_OFFSET;
+      if (left) left.setAttribute('transform', `translate(${offX}, ${offY})`);
+      if (right) right.setAttribute('transform', `translate(${offX}, ${offY})`);
+    });
+    requestAnimationFrame(updateEyes);
+  }
+
+  function blinkLoop() {
+    document.querySelectorAll('.chatbot-eye').forEach((eye) => eye.classList.add('chatbot-blinking'));
+    setTimeout(() => {
+      document.querySelectorAll('.chatbot-eye').forEach((eye) => eye.classList.remove('chatbot-blinking'));
+    }, 140);
+    setTimeout(blinkLoop, 3000 + Math.random() * 3000);
+  }
+
+  function initFaceSystem() {
+    document.addEventListener('pointermove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+    requestAnimationFrame(updateEyes);
+    setTimeout(blinkLoop, 2200);
+  }
+
+  // Small static face used inside per-message avatars (no tracking).
+  function miniAvatarNode() {
+    return el('div', { class: 'chatbot-mini-avatar' }, createFaceSVG('chatbot-face-mini'));
+  }
+
   function buildWidget() {
     const root = el('div', { id: 'chatbot-root' });
 
+    const bubbleFace = createFaceSVG('chatbot-face-bubble');
     const bubble = el(
       'button',
       { id: 'chatbot-bubble', 'aria-label': 'Open chat' },
       el('div', { class: 'chatbot-dot' }),
-      el('span', {
-        html: `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.02 2 11c0 2.4 1.06 4.57 2.8 6.19L4 22l5.06-1.68C10.02 20.76 11 21 12 21c5.52 0 10-4.02 10-9s-4.48-10-10-10zm0 16c-.9 0-1.76-.15-2.55-.42l-.4-.14-2.85.95.9-2.7-.26-.42C6.15 14.5 5.5 12.83 5.5 11c0-3.86 3.36-7 7-7s7 3.14 7 7-3.36 7-7 7z"/></svg>`,
-      })
+      bubbleFace
     );
+    registerTrackedFace(bubbleFace);
 
+    const avatarFace = createFaceSVG('chatbot-face-avatar');
     const panel = el(
       'div',
       { id: 'chatbot-panel' },
       el(
         'div',
         { id: 'chatbot-header' },
-        el(
-          'div',
-          { id: 'chatbot-avatar' },
-          'C',
-          el('div', { class: 'chatbot-status' })
-        ),
+        el('div', { id: 'chatbot-avatar' }, avatarFace, el('div', { class: 'chatbot-status' })),
         el(
           'div',
           { id: 'chatbot-header-text' },
@@ -80,6 +167,7 @@
       ),
       el('div', { id: 'chatbot-footer-note' }, 'Powered by Gemini')
     );
+    registerTrackedFace(avatarFace);
 
     root.appendChild(bubble);
     root.appendChild(panel);
@@ -93,7 +181,7 @@
     const row = el('div', { class: `chatbot-row ${role}` });
 
     if (role === 'bot') {
-      row.appendChild(el('div', { class: 'chatbot-mini-avatar' }, 'C'));
+      row.appendChild(miniAvatarNode());
     }
 
     const bubble = el('div', { class: `chatbot-msg ${role}` });
@@ -113,7 +201,7 @@
     const row = el(
       'div',
       { class: 'chatbot-row bot', id: 'chatbot-typing-row' },
-      el('div', { class: 'chatbot-mini-avatar' }, 'C'),
+      miniAvatarNode(),
       el(
         'div',
         { class: 'chatbot-msg bot typing' },
@@ -189,6 +277,7 @@
   }
 
   function init() {
+    initFaceSystem();
     const { bubble, panel } = buildWidget();
     const closeBtn = document.getElementById('chatbot-close');
     const input = document.getElementById('chatbot-input');

@@ -37,17 +37,6 @@
   transform: translateY(-1px) scale(0.97);
 }
 
-#chatbot-bubble svg {
-  width: 26px;
-  height: 26px;
-  fill: #0f0f0f;
-  transition: transform 0.3s ease;
-}
-
-#chatbot-bubble.chatbot-active svg {
-  transform: rotate(90deg) scale(0.9);
-}
-
 @keyframes chatbot-pulse {
   0%, 100% { box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 0 rgba(250,100,0,0.35); }
   50%      { box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 14px rgba(250,100,0,0); }
@@ -62,6 +51,7 @@
   border-radius: 50%;
   background: #ff3c00;
   border: 2px solid #0f0f0f;
+  z-index: 2;
 }
 
 /* ---- Chat panel ---- */
@@ -125,11 +115,9 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  color: #0f0f0f;
   position: relative;
   box-shadow: 0 4px 14px rgba(250, 100, 0, 0.35);
+  padding: 6px;
 }
 
 #chatbot-avatar .chatbot-status {
@@ -232,10 +220,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 11px;
-  color: #0f0f0f;
   flex-shrink: 0;
+  padding: 4px;
 }
 
 .chatbot-msg {
@@ -385,6 +371,47 @@
   color: rgba(255, 255, 255, 0.25);
   padding: 6px 0 10px;
   letter-spacing: 0.3px;
+}
+
+/* ---- Cute cursor-following face (replaces old "C" letter avatars) ---- */
+.chatbot-face {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.chatbot-face-bubble { width: 100%; height: 100%; }
+.chatbot-face-avatar { width: 100%; height: 100%; }
+.chatbot-face-mini { width: 100%; height: 100%; }
+
+.chatbot-face .chatbot-eye ellipse {
+  fill: #fff;
+}
+.chatbot-face .chatbot-pupil {
+  fill: #0f0f0f;
+  transition: transform 0.05s linear;
+}
+.chatbot-face .chatbot-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.1s ease;
+}
+.chatbot-face .chatbot-eye.chatbot-blinking {
+  transform: scaleY(0.08);
+}
+.chatbot-face-blush {
+  fill: #fff;
+  opacity: 0.35;
+}
+.chatbot-face-mouth {
+  fill: none;
+  stroke: #0f0f0f;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.chatbot-mini-avatar .chatbot-face-mouth {
+  stroke-width: 5;
 }
 
 /* ---- Mobile ---- */
