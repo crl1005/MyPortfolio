@@ -7,16 +7,13 @@
   const WELCOME_MESSAGE =
     "Hi! I'm Carlos's portfolio assistant 👋 Ask me about his projects, skills, pricing, or how to get in touch.";
 
-  // Expanded to cover the most common visitor questions (pricing, timeline,
-  // availability) so there's one clear set of chips instead of a separate
-  // "FAQ" concept layered on top of "quick replies".
   const QUICK_REPLIES = [
-    { label: 'Projects', prompt: 'What projects has Carlos built?' },
-    { label: 'Skills', prompt: "What are Carlos's technical skills?" },
-    { label: 'Pricing', prompt: 'How much does Carlos charge for a project?' },
-    { label: 'Timeline', prompt: 'How long does a typical project take?' },
-    { label: 'Availability', prompt: 'Is Carlos available for new projects right now?' },
-    { label: 'Contact', prompt: 'How can I contact Carlos for freelance work?' },
+    { label: '🗂️ Projects', prompt: 'What projects has Carlos built?' },
+    { label: '🛠️ Skills', prompt: "What are Carlos's technical skills?" },
+    { label: '💰 Pricing', prompt: 'How much does Carlos charge for a project?' },
+    { label: '⏱️ Timeline', prompt: 'How long does a typical project take?' },
+    { label: '📅 Availability', prompt: 'Is Carlos available for new projects right now?' },
+    { label: '📩 Contact', prompt: 'How can I contact Carlos for freelance work?' },
   ];
 
   let history = []; // { role: 'user' | 'assistant', content: string }
@@ -37,13 +34,16 @@
   }
 
   // ---------------------------------------------------------------------
-  // Cute cursor-following face
-  // Draws just the eyes/blush/mouth (transparent background) so it sits on
-  // top of whatever circular, gradient-filled container it's placed in
-  // (the bubble button, the header avatar, or a mini message avatar) —
-  // no need to redraw a duplicate head circle underneath.
+  // Cute cursor-following face with a few emotion states
   // ---------------------------------------------------------------------
   const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  const EMOTIONS = {
+    idle: { mouth: 'M 36 66 Q 50 78 64 66', eyeRy: 13 },
+    thinking: { mouth: 'M 40 70 Q 50 65 60 70', eyeRy: 8 },
+    happy: { mouth: 'M 30 60 Q 50 86 70 60', eyeRy: 15 },
+    sad: { mouth: 'M 36 74 Q 50 63 64 74', eyeRy: 10 },
+  };
 
   function createFaceSVG(extraClass) {
     const svg = document.createElementNS(SVG_NS, 'svg');
@@ -66,19 +66,49 @@
   }
 
   // Only the two persistent, larger faces (bubble + header avatar) get live
-  // cursor tracking. Per-message mini avatars stay static — tracking every
-  // message face too would mean an ever-growing, unnecessary registry for
-  // avatars that scroll out of view anyway.
-  const trackedFaces = []; // { svg, left, right }
+  // cursor tracking and emotion changes. Per-message mini avatars stay static.
+  const trackedFaces = []; // { svg, left, right, wrap }
   let mouseX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
   let mouseY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
   const PUPIL_MAX_OFFSET = 3.2;
+  let emotionResetTimer = null;
 
-  function registerTrackedFace(svg) {
+  function registerTrackedFace(svg, wrap) {
     trackedFaces.push({
       svg,
+      wrap,
       left: svg.querySelector('.chatbot-eye-left .chatbot-pupil'),
       right: svg.querySelector('.chatbot-eye-right .chatbot-pupil'),
+    });
+  }
+
+  function setEmotion(name) {
+    const shape = EMOTIONS[name] || EMOTIONS.idle;
+    trackedFaces.forEach(({ svg }) => {
+      const mouth = svg.querySelector('.chatbot-face-mouth');
+      if (mouth) mouth.setAttribute('d', shape.mouth);
+      svg.querySelectorAll('.chatbot-eye ellipse').forEach((e) => e.setAttribute('ry', shape.eyeRy));
+    });
+  }
+
+  function setEmotionTemporarily(name, holdMs) {
+    if (emotionResetTimer) clearTimeout(emotionResetTimer);
+    setEmotion(name);
+    emotionResetTimer = setTimeout(() => setEmotion('idle'), holdMs);
+  }
+
+  function bounceAndSparkle() {
+    trackedFaces.forEach(({ wrap }) => {
+      if (!wrap) return;
+      wrap.classList.remove('chatbot-bounce');
+      // force reflow so the animation can retrigger if already present
+      void wrap.offsetWidth;
+      wrap.classList.add('chatbot-bounce');
+      setTimeout(() => wrap.classList.remove('chatbot-bounce'), 500);
+
+      const sparkle = el('span', { class: 'chatbot-sparkle' }, '✨');
+      wrap.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 800);
     });
   }
 
@@ -131,16 +161,17 @@
       el('div', { class: 'chatbot-dot' }),
       bubbleFace
     );
-    registerTrackedFace(bubbleFace);
+    registerTrackedFace(bubbleFace, bubble);
 
     const avatarFace = createFaceSVG('chatbot-face-avatar');
+    const avatarWrap = el('div', { id: 'chatbot-avatar' }, avatarFace, el('div', { class: 'chatbot-status' }));
     const panel = el(
       'div',
       { id: 'chatbot-panel' },
       el(
         'div',
         { id: 'chatbot-header' },
-        el('div', { id: 'chatbot-avatar' }, avatarFace, el('div', { class: 'chatbot-status' })),
+        avatarWrap,
         el(
           'div',
           { id: 'chatbot-header-text' },
@@ -167,7 +198,7 @@
       ),
       el('div', { id: 'chatbot-footer-note' }, 'Powered by Gemini')
     );
-    registerTrackedFace(avatarFace);
+    registerTrackedFace(avatarFace, avatarWrap);
 
     root.appendChild(bubble);
     root.appendChild(panel);
@@ -223,11 +254,13 @@
     document.getElementById('chatbot-quick-replies').innerHTML = '';
   }
 
+  // Renders the quick-reply chips with a staggered pop-in, one after another.
   function showQuickReplies() {
     const container = document.getElementById('chatbot-quick-replies');
     container.innerHTML = '';
-    QUICK_REPLIES.forEach((qr) => {
+    QUICK_REPLIES.forEach((qr, i) => {
       const chip = el('button', { class: 'chatbot-chip' }, qr.label);
+      chip.style.animationDelay = `${i * 0.06}s`;
       chip.addEventListener('click', () => {
         clearQuickReplies();
         sendMessage(qr.prompt);
@@ -244,6 +277,7 @@
     const input = document.getElementById('chatbot-input');
     sendBtn.disabled = true;
     clearQuickReplies();
+    setEmotion('thinking');
 
     appendMessage('user', text);
     history.push({ role: 'user', content: text });
@@ -263,13 +297,21 @@
 
       if (!res.ok || !data.reply) {
         appendMessage('bot', "Sorry, something went wrong on my end. Try emailing Carlos directly instead!");
+        setEmotionTemporarily('sad', 1800);
       } else {
         appendMessage('bot', data.reply);
         history.push({ role: 'assistant', content: data.reply });
+        setEmotionTemporarily('happy', 1600);
+        bounceAndSparkle();
       }
+
+      // Bring the prepared questions back so the visitor can keep browsing.
+      showQuickReplies();
     } catch (err) {
       hideTyping();
       appendMessage('bot', "I couldn't connect just now. Please check your connection and try again.");
+      setEmotionTemporarily('sad', 1800);
+      showQuickReplies();
     } finally {
       isSending = false;
       sendBtn.disabled = false;

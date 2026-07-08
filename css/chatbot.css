@@ -428,3 +428,52 @@
     bottom: 20px;
   }
 }
+
+/* ---- Emotion bounce + sparkle burst ---- */
+#chatbot-bubble, #chatbot-avatar {
+  position: relative;
+}
+
+@keyframes chatbot-bounce-pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.18); }
+  60%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+#chatbot-bubble.chatbot-bounce { animation: chatbot-bounce-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+#chatbot-avatar.chatbot-bounce { animation: chatbot-bounce-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes chatbot-sparkle-pop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4) translateY(0); }
+  30%  { opacity: 1; transform: translate(-50%, -50%) scale(1.1) translateY(-6px); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8) translateY(-22px); }
+}
+.chatbot-sparkle {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  font-size: 16px;
+  pointer-events: none;
+  animation: chatbot-sparkle-pop 0.8s ease-out forwards;
+  z-index: 5;
+}
+
+/* ---- Playful bubble wiggle on hover (adds to the existing lift) ---- */
+@keyframes chatbot-wiggle {
+  0%, 100% { rotate: 0deg; }
+  25%      { rotate: -6deg; }
+  75%      { rotate: 6deg; }
+}
+#chatbot-bubble:hover {
+  animation: chatbot-wiggle 0.4s ease-in-out;
+}
+
+/* ---- Staggered chip pop-in ---- */
+@keyframes chatbot-chip-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chatbot-chip {
+  opacity: 0;
+  animation: chatbot-chip-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
