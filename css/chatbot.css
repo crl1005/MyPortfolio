@@ -478,14 +478,15 @@
 
 @media (max-width: 480px) {
   #chatbot-panel {
-    width: 90%;
-    height: 70%;
-    bottom: 20px;
-    right: 5%;
+    width: auto;
+    height: 68vh;
+    bottom: 92px;
+    right: 16px;
+    left: 16px;
   }
 }
 
-#chatbot-Bubble {
-  right: 28px;
+#chatbot-bubble {
+  right: 20px;
   bottom: 20px;
 }
